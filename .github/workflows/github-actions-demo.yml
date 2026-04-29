@@ -20,22 +20,26 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_PRIVATE_KEY }}
           script: |
-            set -e
+            bash -l -c '
+              cd /home/ubuntu/backend/express-api-deops
 
-            echo "🚀 Starting deployment..."
+              echo "Node version:"
+              node -v
 
-            cd /home/ubuntu/backend/express-api-deops
+              echo "NPM version:"
+              npm -v
 
-            echo "📥 Pulling latest code..."
-            git pull origin main
+              echo "Pulling latest code..."
+              git pull origin main
 
-            echo "📦 Installing dependencies..."
-            npm install
+              echo "Installing dependencies..."
+              npm install
 
-            echo "🔄 Restarting PM2 app..."
-            pm2 restart 0
+              echo "Restarting PM2..."
+              pm2 restart 0
 
-            echo "💾 Saving PM2 process list..."
-            pm2 save
+              echo "Saving PM2..."
+              pm2 save
 
-            echo "✅ Deployment completed successfully!"
+              echo "Deployment completed!"
+            '
